@@ -8,7 +8,7 @@ val input =
   .min
 
 // Part2
-def sumOfAllIntToN(n: Int) = n * (n - 1) / 2 + n
+def sumOfAllIntToN(n: Int) = n * (n + 1) / 2
 
 (input.min to input.max)
   .map(i => input.map(crabPos => sumOfAllIntToN((crabPos - i).abs)).sum)
