@@ -2,7 +2,7 @@ import scala.io.Source
 
 // Parsing
 val (numbers, gridSets) = {
-    val numbersLine :: separator :: gridLines = Source.fromFile("day4.input").getLines.toList
+    val numbersLine :: separator :: gridLines = Source.fromFile("day4.input.txt").getLines.toList
 
     val numbers = numbersLine.split(",").map(_.toInt).toList
 

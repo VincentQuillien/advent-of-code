@@ -1,6 +1,6 @@
 import scala.io.Source
 val input = Source
-  .fromFile("day5.input")
+  .fromFile("day5.input.txt")
   .getLines
   .map("([0-9]+)".r.findAllMatchIn(_).toList.map(_.toString.toInt))
   .map { case x1 :: y1 :: x2 :: y2 :: _ => ((x1, y1), (x2, y2)) }
