@@ -12,8 +12,6 @@ val connectedCaves =
       .updated(p2, p1 :: acc.getOrElse(p2, Nil))
   }
 
-def isSmallCave(cave: String) = cave.matches("([a-z].*)")
-
 def getPaths(
     cave: String = "start",
     visitedCaves: Set[String] = Set(),
