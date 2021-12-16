@@ -1,4 +1,5 @@
 import scala.io.Source
+import annotation.tailrec
 
 val input = Source
   .fromFile("day15.input.txt")
@@ -20,14 +21,17 @@ val grid = {
 def getAdjacents(x: Int, y: Int) =
   List((x, y + 1), (x + 1, y), (x, y - 1), (x - 1, y))
 
-val distanceMap =
+def initDistanceMap(grid: Grid) =
   grid.view.mapValues(_ => Int.MaxValue - 9).toMap.updated((0, 0), 0)
 
-def dijkstra(
+@tailrec final def dijkstra(
     point: (Int, Int) = (0, 0),
-    distanceMap: Map[(Int, Int), Int] = distanceMap
+    distanceMap: Map[(Int, Int), Int],
+    grid: Grid
 ): Int = {
-  if (point == (sideLength - 1, sideLength - 1)) distanceMap(point)
+  val end = Math.sqrt(grid.size).toInt - 1
+  if (point == (end, end))
+    distanceMap(point)
   else {
     val adjacents = getAdjacents.tupled(point).filter(distanceMap.contains(_))
     val cumulatedRisk = distanceMap(point)
@@ -45,10 +49,23 @@ def dijkstra(
       updatedDistanceMap.minBy((point, cumulatedRisk) => cumulatedRisk)
     dijkstra(
       minPoint,
-      updatedDistanceMap
+      updatedDistanceMap,
+      grid
     )
-
   }
 }
 
-val part1 = dijkstra()
+val part1 = dijkstra(
+  distanceMap = initDistanceMap(grid),
+  grid = grid
+)
+
+val gridTimes5 = {
+  for (y <- 0 until sideLength * 5; x <- 0 until sideLength * 5) yield {
+    val order = x / sideLength + y / sideLength
+    val risk = (grid(x % sideLength, y % sideLength) + order)
+    ((x, y) -> (if (risk > 9) risk - 9 else risk))
+  }
+}.toMap
+
+dijkstra(distanceMap = initDistanceMap(gridTimes5), grid = gridTimes5)
